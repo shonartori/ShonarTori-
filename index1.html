@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHONARTORY (সোনার তরী) | ডোমেস্টিক এয়ার টিকেটিং এজেন্সি</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+                        bengali: ['Hind Siliguri', 'Noto Sans Bengali', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        skydeep: {50:'#f0f7ff',100:'#e0effe',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e',950:'#082f49'},
+                        goldaccent: {400:'#fbbf24',500:'#f59e0b',600:'#d97706'}
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Hind Siliguri', 'Noto Sans Bengali', 'Inter', sans-serif; background-color: #f8fafc; }
+        .font-en { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #0369a1; border-radius: 4px; }
+        .hero-pattern {
+            background-color: #082f49;
+            background-image: radial-gradient(circle at 85% 20%, rgba(245,158,11,0.18) 0%, transparent 45%),
+                              radial-gradient(circle at 15% 80%, rgba(2,132,199,0.35) 0%, transparent 50%);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <div id="toast-container" class="fixed top-5 right-5 z-[100] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Top Quick Contact Bar -->
+    <div class="bg-skydeep-950 text-white text-xs sm:text-sm py-2 px-4 border-b border-skydeep-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2 text-amber-400 font-medium">
+                <i class="fa-solid fa-plane-up animate-pulse"></i>
+                <span>বাংলাদেশের সকল অভ্যন্তরীণ রুটে সাশ্রয়ী মূল্যে ই-টিকেট ও গ্রুপ বুকিং</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5 sm:gap-4">
+                <a id="top-wa-primary" href="https://wa.me/8801963630584" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white px-2.5 py-1 rounded-full border border-emerald-500/30 transition text-xs font-en font-medium">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span id="top-wa-primary-text">+8801963-630584</span>
+                </a>
+                <a id="top-wa-secondary" href="https://wa.me/8801626794007" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white px-2.5 py-1 rounded-full border border-emerald-500/30 transition text-xs font-en font-medium">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span id="top-wa-secondary-text">+8801626-794007</span>
+                </a>
+                <a id="top-email-link" href="mailto:robiulhasan211116@gmail.com" class="hidden lg:flex items-center gap-1.5 text-slate-300 hover:text-amber-400 transition text-xs font-en">
+                    <i class="fa-solid fa-envelope text-amber-400"></i>
+                    <span id="top-email-text">shonartori2025@gmail.com</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Sticky Header -->
+    <header class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+            <a href="#" id="header-brand-container" class="flex items-center gap-3 group shrink-0"></a>
+
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-700">
+                <a href="#booking-section" class="hover:text-skydeep-700 transition">টিকেট বুকিং</a>
+                <a href="#routes-showcase" class="hover:text-skydeep-700 transition">রুট ও ভাড়া</a>
+                <a href="#schedules-section" class="hover:text-skydeep-700 transition">ফ্লাইট সিডিউল</a>
+                <a href="#trust-footer" class="hover:text-skydeep-700 transition">যোগাযোগ</a>
+            </nav>
+
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                <a id="header-call-btn" href="tel:+8801963630584" class="hidden sm:inline-flex items-center gap-1.5 bg-skydeep-50 hover:bg-skydeep-100 text-skydeep-900 border border-skydeep-200 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition">
+                    <i class="fa-solid fa-phone text-skydeep-700"></i>
+                    <span id="header-call-text" class="font-en">01963-630584</span>
+                </a>
+
+                <a href="#booking-section" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm shadow-sm transition">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>টিকেট বুকিং</span>
+                </a>
+
+                <!-- Admin Panel → separate admin.html -->
+                <a href="admin.html" class="inline-flex items-center gap-1.5 bg-skydeep-950 hover:bg-skydeep-800 text-amber-400 border border-skydeep-800 font-bold px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm shadow-sm transition cursor-pointer" title="অ্যাডমিন প্যানেল খুলুন">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span class="font-en">Admin Panel</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dynamic Promo Banner -->
+    <div id="promo-banner-bar" class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 py-2 px-4 text-center text-xs sm:text-sm font-semibold shadow-inner">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
+            <span class="bg-skydeep-950 text-amber-400 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-en font-bold shrink-0">Special Offer</span>
+            <span id="promo-banner-text">🎉 ঢাকা ↔ কক্সবাজার ও সিলেট আপডাউন টিকেটে বিশেষ ডিসকাউন্ট চলছে! আজই হোয়াটসঅ্যাপে বুকিং দিন।</span>
+        </div>
+    </div>
+
+    <!-- Hero Section & Interactive Booking Form -->
+    <section id="booking-section" class="hero-pattern pt-8 pb-16 sm:pt-12 sm:pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-amber-300 text-xs sm:text-sm font-medium mb-4">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>বিশ্বস্ত ও দ্রুততম ডোমেস্টিক এয়ার টিকেটিং সেবা</span>
+                </div>
+                <h1 id="hero-main-title" class="text-2xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-3">
+                    সহজ ও সাশ্রয়ী আকাশযাত্রা <span class="text-amber-400">SHONARTORY (সোনার তরী)</span>-এর সাথে
+                </h1>
+                <p id="hero-main-subtitle" class="text-sky-100 text-sm sm:text-base max-w-2xl mx-auto">
+                    ঢাকা থেকে কক্সবাজার, চট্টগ্রাম, সিলেট, সৈয়দপুর, রাজশাহী, বরিশাল ও যশোর রুটের সকল এয়ারলাইন্সের আপডাউন ও ওয়ান-ওয়ে টিকেট বুক করুন সরাসরি হোয়াটসঅ্যাপে।
+                </p>
+            </div>
+
+            <!-- Interactive Flight Booking Card -->
+            <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/80 p-5 sm:p-8 max-w-5xl mx-auto">
+                <form id="flight-booking-form" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                        <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl w-full sm:w-auto">
+                            <label class="flex-1 sm:flex-initial cursor-pointer">
+                                <input type="radio" name="tripType" value="round-trip" class="peer sr-only" checked>
+                                <div class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-center text-slate-600 peer-checked:bg-skydeep-900 peer-checked:text-white shadow-sm transition">
+                                    <i class="fa-solid fa-arrows-left-right mr-1.5 text-amber-400"></i>আপডাউন (Round-Trip)
+                                </div>
+                            </label>
+                            <label class="flex-1 sm:flex-initial cursor-pointer">
+                                <input type="radio" name="tripType" value="one-way" class="peer sr-only">
+                                <div class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-center text-slate-600 peer-checked:bg-skydeep-900 peer-checked:text-white shadow-sm transition">
+                                    <i class="fa-solid fa-arrow-right-long mr-1.5 text-amber-400"></i>ওয়ান-ওয়ে (One-Way)
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-slate-500 whitespace-nowrap">এয়ারলাইন্স:</span>
+                            <select id="airline-pref" class="bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold rounded-xl px-3 py-2 focus:ring-2 focus:ring-skydeep-600 focus:border-skydeep-600 outline-none">
+                                <option value="Any Airline (যেকোনো এয়ারলাইন্স)">যেকোনো এয়ারলাইন্স (Any)</option>
+                                <option value="US-Bangla Airlines">US-Bangla Airlines</option>
+                                <option value="Air Astra">Air Astra</option>
+                                <option value="Biman Bangladesh Airlines">Biman Bangladesh Airlines</option>
+                                <option value="NOVOAIR">NOVOAIR</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-bold text-slate-600 mb-1.5">
+                                <i class="fa-solid fa-plane-departure text-skydeep-700 mr-1"></i>যাত্রা শুরু (From)
+                            </label>
+                            <select id="from-airport" class="w-full bg-slate-50 hover:bg-slate-100/70 border border-slate-300 rounded-2xl px-3.5 py-3 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-skydeep-600 outline-none transition"></select>
+                        </div>
+
+                        <div class="md:col-span-1 flex justify-center">
+                            <button type="button" id="swap-route-btn" title="রুট পরিবর্তন করুন" class="w-10 h-10 rounded-full bg-skydeep-50 hover:bg-skydeep-100 text-skydeep-800 border border-skydeep-200 flex items-center justify-center transition transform hover:rotate-180">
+                                <i class="fa-solid fa-right-left text-sm"></i>
+                            </button>
+                        </div>
+
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-bold text-slate-600 mb-1.5">
+                                <i class="fa-solid fa-plane-arrival text-amber-600 mr-1"></i>গন্তব্য (To)
+                            </label>
+                            <select id="to-airport" class="w-full bg-slate-50 hover:bg-slate-100/70 border border-slate-300 rounded-2xl px-3.5 py-3 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-skydeep-600 outline-none transition"></select>
+                        </div>
+
+                        <div id="dep-date-wrapper" class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-600 mb-1.5">
+                                <i class="fa-regular fa-calendar text-skydeep-700 mr-1"></i>যাত্রার তারিখ
+                            </label>
+                            <input type="date" id="departure-date" required class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-skydeep-600 outline-none font-en">
+                        </div>
+
+                        <div id="ret-date-wrapper" class="md:col-span-3">
+                            <label class="block text-xs font-bold text-slate-600 mb-1.5">
+                                <i class="fa-regular fa-calendar-check text-amber-600 mr-1"></i>ফেরার তারিখ (Return)
+                            </label>
+                            <input type="date" id="return-date" class="w-full bg-amber-50/50 border border-amber-300 rounded-2xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none font-en">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 pt-2">
+                        <div class="lg:col-span-5 grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">প্রাপ্তবয়স্ক (Adult)</label>
+                                <select id="pax-adult" class="w-full bg-white border border-slate-300 rounded-xl px-2 py-1.5 text-sm font-bold text-slate-900 font-en">
+                                    <option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10+ (গ্রুপ)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">শিশু (2-11 yrs)</label>
+                                <select id="pax-child" class="w-full bg-white border border-slate-300 rounded-xl px-2 py-1.5 text-sm font-bold text-slate-900 font-en">
+                                    <option value="0" selected>0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">নবজাতক (&lt;2 yrs)</label>
+                                <select id="pax-infant" class="w-full bg-white border border-slate-300 rounded-xl px-2 py-1.5 text-sm font-bold text-slate-900 font-en">
+                                    <option value="0" selected>0</option><option value="1">1</option><option value="2">2</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-3">
+                            <label class="block text-xs font-bold text-slate-600 mb-1.5">
+                                <i class="fa-solid fa-user text-skydeep-700 mr-1"></i>যাত্রীর নাম (Name)
+                            </label>
+                            <input type="text" id="passenger-name" placeholder="যেমন: মো. আরিফুল ইসলাম" required class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-skydeep-600 outline-none">
+                        </div>
+
+                        <div class="lg:col-span-4">
+                            <label class="block text-xs font-bold text-slate-600 mb-1.5">
+                                <i class="fa-solid fa-mobile-screen text-skydeep-700 mr-1"></i>মোবাইল নম্বর (Phone)
+                            </label>
+                            <input type="tel" id="passenger-phone" placeholder="01XXXXXXXXX" required class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-skydeep-600 outline-none font-en">
+                        </div>
+                    </div>
+
+                    <div class="bg-skydeep-50/80 border border-skydeep-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-skydeep-900 text-amber-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-skydeep-900">আনুমানিক মোট টিকেট মূল্য (Estimated Total Fare)</p>
+                                <p id="estimated-fare-breakdown" class="text-xs text-slate-600">ঢাকা ↔ কক্সবাজার • আপডাউন • ১ জন প্রাপ্তবয়স্ক</p>
+                            </div>
+                        </div>
+                        <div class="text-left sm:text-right">
+                            <span id="estimated-fare-amount" class="font-en font-extrabold text-2xl text-skydeep-950">৳ 8,900</span>
+                            <span class="block text-[11px] text-slate-500">*এয়ারলাইন্স সিট অ্যাভেইলেবিলিটি সাপেক্ষে</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm">
+                            <span class="font-bold text-slate-700"><i class="fa-brands fa-whatsapp text-emerald-600 text-base mr-1"></i>এজেন্ট নম্বর:</span>
+                            <label class="inline-flex items-center gap-1.5 cursor-pointer bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl">
+                                <input type="radio" name="waNumber" value="primary" checked class="accent-emerald-600">
+                                <span id="form-wa-primary-label" class="font-en font-semibold text-emerald-950">+8801963-630584</span>
+                            </label>
+                            <label class="inline-flex items-center gap-1.5 cursor-pointer bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl">
+                                <input type="radio" name="waNumber" value="secondary" class="accent-emerald-600">
+                                <span id="form-wa-secondary-label" class="font-en font-semibold text-emerald-950">+8801626-794007</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="w-full md:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold text-sm sm:text-base px-7 py-3.5 rounded-2xl shadow-lg shadow-emerald-600/25 transition transform active:scale-98">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>WhatsApp-এ বুকিং কনফার্ম করুন</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7 Domestic Routes Showcase Grid -->
+    <section id="routes-showcase" class="pt-12 sm:pt-16 pb-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="mb-8">
+            <span class="text-xs font-bold uppercase tracking-wider text-skydeep-700 bg-skydeep-50 border border-skydeep-200 px-3 py-1 rounded-full">Domestic Destinations</span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-skydeep-950 mt-2">অভ্যন্তরীণ রুট ও শুরুর ভাড়া (ওয়ান-ওয়ে এবং আপডাউন)</h2>
+            <p class="text-sm text-slate-600 mt-1">যেকোনো রুটে ক্লিক করে সরাসরি বুকিং ফর্মে সিলেক্ট করুন</p>
+        </div>
+        <div id="routes-showcase-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"></div>
+    </section>
+
+    <!-- Daily Flight Schedules Section -->
+    <section id="schedules-section" class="py-10 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">Daily Flight Schedules</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-skydeep-950 mt-2">দৈনিক ফ্লাইট সিডিউল ও এয়ারলাইন্স তালিকা</h2>
+                <p class="text-sm text-slate-600 mt-1">আপনার পছন্দের সময় ও এয়ারলাইন্স বেছে নিয়ে ১ ক্লিকে বুকিং করুন</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1.5 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
+                <button type="button" data-time-filter="ALL" class="time-filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-skydeep-900 text-white transition">সব (All)</button>
+                <button type="button" data-time-filter="Morning" class="time-filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-regular fa-sun text-amber-500 mr-1"></i>সকাল</button>
+                <button type="button" data-time-filter="Afternoon" class="time-filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-cloud-sun text-orange-500 mr-1"></i>দুপুর</button>
+                <button type="button" data-time-filter="Evening" class="time-filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-moon text-indigo-500 mr-1"></i>সন্ধ্যা</button>
+            </div>
+        </div>
+
+        <div id="route-filter-pills" class="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar"></div>
+        <div id="schedules-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- Special Group Booking Banner -->
+    <section id="group-offer" class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-16">
+        <div class="rounded-3xl bg-gradient-to-br from-skydeep-950 via-skydeep-900 to-skydeep-800 p-6 sm:p-10 text-white shadow-xl border border-skydeep-700 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                <i class="fa-solid fa-people-group text-[180px] text-amber-400"></i>
+            </div>
+            <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                <div class="space-y-2.5 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 bg-amber-400 text-slate-950 text-xs font-extrabold px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-tags"></i>
+                        <span>গ্রুপ বুকিংয়ে বিশেষ ছাড় (Group Booking Discount)</span>
+                    </div>
+                    <h3 class="text-2xl sm:text-3xl font-bold text-white">১০ বা ততোধিক যাত্রীর ফ্যামিলি ট্যুর বা কর্পোরেট গ্রুপ বুকিং?</h3>
+                    <p class="text-sky-100 text-sm sm:text-base">
+                        <strong class="text-amber-300">SHONARTORY (সোনার তরী)</strong> দিচ্ছে ১০+ যাত্রীর গ্রুপ টিকেটে বিশেষ কর্পোরেট ডিসকাউন্ট, ফ্লেক্সিবল নাম পরিবর্তনের সুবিধা এবং ডেডিকেটেড সাপোর্ট।
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                    <a id="group-wa-btn" href="https://wa.me/8801963630584?text=আসসালামু%20আলাইকুম%20SHONARTORY%20(সোনার%20তরী),%20আমি%20১০+%20যাত্রীর%20গ্রুপ%20বুকিং%20সম্পর্কে%20জানতে%20চাই।" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-6 py-3.5 rounded-2xl shadow-lg transition text-sm sm:text-base whitespace-nowrap">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>গ্রুপ কোটেশন নিন</span>
+                    </a>
+                    <a id="group-call-btn" href="tel:+8801626794007" class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/25 font-semibold px-5 py-3.5 rounded-2xl transition text-sm sm:text-base whitespace-nowrap font-en">
+                        <i class="fa-solid fa-phone text-amber-400"></i>
+                        <span id="group-call-text">+8801626-794007</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer & Trust Badges -->
+    <footer id="trust-footer" class="bg-skydeep-950 text-slate-300 mt-auto border-t border-skydeep-900">
+        <div class="border-b border-skydeep-800/80 bg-skydeep-900/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shrink-0 text-emerald-400 text-lg"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div><h4 class="font-bold text-white text-sm sm:text-base">২৪/৭ হোয়াটসঅ্যাপ সাপোর্ট</h4><p class="text-xs text-slate-400 mt-0.5">যেকোনো সময় সরাসরি মেসেজ ও কলে তাৎক্ষণিক টিকেট সহায়তা</p></div>
+                </div>
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-400 text-lg"><i class="fa-solid fa-bolt"></i></div>
+                    <div><h4 class="font-bold text-white text-sm sm:text-base">ইনস্ট্যান্ট ই-টিকেট ডেলিভারি</h4><p class="text-xs text-slate-400 mt-0.5">বুকিং কনফার্ম হওয়ার সাথে সাথেই হোয়াটসঅ্যাপ ও ইমেইলে পিডিএফ টিকেট</p></div>
+                </div>
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center shrink-0 text-sky-400 text-lg"><i class="fa-solid fa-arrows-rotate"></i></div>
+                    <div><h4 class="font-bold text-white text-sm sm:text-base">আপডাউন স্পেশাল ফেয়ার</h4><p class="text-xs text-slate-400 mt-0.5">রাউন্ড-ট্রিপ টিকেটে আকর্ষণীয় মূল্যছাড় ও রিটার্ন সিডিউল সুবিধা</p></div>
+                </div>
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center shrink-0 text-purple-400 text-lg"><i class="fa-solid fa-users-gear"></i></div>
+                    <div><h4 class="font-bold text-white text-sm sm:text-base">গ্রুপ বুকিং অ্যাসিস্ট্যান্স</h4><p class="text-xs text-slate-400 mt-0.5">১০+ যাত্রীর ফ্যামিলি বা অফিস ট্যুরের জন্য স্পেশাল গ্রুপ ডিল</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-skydeep-800/80">
+                <div>
+                    <div id="footer-brand-container" class="mb-3"></div>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-3">
+                        বাংলাদেশের অভ্যন্তরীণ সকল রুটে বিশ্বস্ত ও নির্ভরযোগ্য এয়ার টিকেটিং এজেন্সি। দ্রুত বুকিং, সাশ্রয়ী ভাড়া এবং আন্তরিক কাস্টমার সার্ভিসই আমাদের অঙ্গীকার।
+                    </p>
+                    <p class="text-xs text-slate-300 flex items-start gap-2">
+                        <i class="fa-solid fa-location-dot text-amber-400 mt-0.5"></i>
+                        <span id="footer-address-text">ঢাকা, বাংলাদেশ (Dhaka, Bangladesh)</span>
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-base mb-3">অভ্যন্তরীণ ফ্লাইট রুটসমূহ</h4>
+                    <ul class="grid grid-cols-2 gap-2 text-xs sm:text-sm text-slate-400">
+                        <li><i class="fa-solid fa-plane text-amber-400/80 mr-1.5 text-xs"></i>ঢাকা ↔ কক্সবাজার (CXB)</li>
+                        <li><i class="fa-solid fa-plane text-amber-400/80 mr-1.5 text-xs"></i>ঢাকা ↔ চট্টগ্রাম (CGP)</li>
+                        <li><i class="fa-solid fa-plane text-amber-400/80 mr-1.5 text-xs"></i>ঢাকা ↔ সিলেট (ZYL)</li>
+                        <li><i class="fa-solid fa-plane text-amber-400/80 mr-1.5 text-xs"></i>ঢাকা ↔ সৈয়দপুর (SPD)</li>
+                        <li><i class="fa-solid fa-plane text-amber-400/80 mr-1.5 text-xs"></i>ঢাকা ↔ রাজশাহী (RJH)</li>
+                        <li><i class="fa-solid fa-plane text-amber-400/80 mr-1.5 text-xs"></i>ঢাকা ↔ বরিশাল (BZL)</li>
+                        <li><i class="fa-solid fa-plane text-amber-400/80 mr-1.5 text-xs"></i>ঢাকা ↔ যশোর (JSR)</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-base mb-3">সরাসরি যোগাযোগ ও ইমেইল</h4>
+                    <div class="space-y-2.5 text-sm">
+                        <div class="flex items-center justify-between bg-skydeep-900/80 p-2.5 rounded-xl border border-skydeep-800">
+                            <span id="footer-phone1-text" class="font-en font-semibold text-white">+8801963-630584</span>
+                            <div class="flex items-center gap-2">
+                                <a id="footer-phone1-call" href="tel:+8801963630584" class="px-2.5 py-1 bg-skydeep-700 hover:bg-skydeep-600 text-white rounded-lg text-xs font-semibold transition">Call</a>
+                                <a id="footer-phone1-wa" href="https://wa.me/8801963630584" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold transition">WhatsApp</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between bg-skydeep-900/80 p-2.5 rounded-xl border border-skydeep-800">
+                            <span id="footer-phone2-text" class="font-en font-semibold text-white">+8801626-794007</span>
+                            <div class="flex items-center gap-2">
+                                <a id="footer-phone2-call" href="tel:+8801626794007" class="px-2.5 py-1 bg-skydeep-700 hover:bg-skydeep-600 text-white rounded-lg text-xs font-semibold transition">Call</a>
+                                <a id="footer-phone2-wa" href="https://wa.me/8801626794007" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold transition">WhatsApp</a>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                            <a id="footer-email-link" href="mailto:robiulhasan211116@gmail.com" class="inline-flex items-center gap-2 text-xs text-amber-300 hover:text-amber-200 font-en">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span id="footer-email-text">robiulhasan211116@gmail.com</span>
+                            </a>
+                            <a id="footer-fb-link" href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white px-2.5 py-1 rounded-lg border border-blue-500/30 transition font-en">
+                                <i class="fa-brands fa-facebook"></i>
+                                <span>Facebook</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+                <p>&copy; <span id="current-year" class="font-en">2026</span> <strong class="text-white font-en">SHONARTORY</strong> (সোনার তরী). সর্বস্বত্ব সংরক্ষিত।</p>
+            </div>
+        </div>
+    </footer>
+
+    <a id="floating-wa-btn" href="https://wa.me/8801963630584?text=আসসালামু%20আলাইকুম%20SHONARTORY%20(সোনার%20তরী),%20আমি%20ডোমেস্টিক%20এয়ার%20টিকেট%20সম্পর্কে%20জানতে%20চাই।" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="fixed bottom-5 right-5 z-40 w-14 h-14 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition transform hover:scale-110 border-2 border-white">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        (function() {
+            const STORAGE_KEY = 'shonartory_store_v2';
+
+            const AIRPORTS = [
+                { code: 'DAC', cityBn: 'ঢাকা', cityEn: 'Dhaka', name: 'ঢাকা (DAC)' },
+                { code: 'CXB', cityBn: 'কক্সবাজার', cityEn: "Cox's Bazar", name: 'কক্সবাজার (CXB)' },
+                { code: 'CGP', cityBn: 'চট্টগ্রাম', cityEn: 'Chattogram', name: 'চট্টগ্রাম (CGP)' },
+                { code: 'ZYL', cityBn: 'সিলেট', cityEn: 'Sylhet', name: 'সিলেট (ZYL)' },
+                { code: 'SPD', cityBn: 'সৈয়দপুর', cityEn: 'Saidpur', name: 'সৈয়দপুর (SPD)' },
+                { code: 'RJH', cityBn: 'রাজশাহী', cityEn: 'Rajshahi', name: 'রাজশাহী (RJH)' },
+                { code: 'BZL', cityBn: 'বরিশাল', cityEn: 'Barishal', name: 'বরিশাল (BZL)' },
+                { code: 'JSR', cityBn: 'যশোর', cityEn: 'Jashore', name: 'যশোর (JSR)' }
+            ];
+
+            const DEFAULT_ROUTES = [
+                { id: 'DAC-CXB', from: 'DAC', to: 'CXB', labelBn: 'ঢাকা ↔ কক্সবাজার', labelEn: "Dhaka ↔ Cox's Bazar", oneWayBase: 4599, roundTripBase: 8900, active: true },
+                { id: 'DAC-CGP', from: 'DAC', to: 'CGP', labelBn: 'ঢাকা ↔ চট্টগ্রাম', labelEn: 'Dhaka ↔ Chattogram', oneWayBase: 3799, roundTripBase: 7400, active: true },
+                { id: 'DAC-ZYL', from: 'DAC', to: 'ZYL', labelBn: 'ঢাকা ↔ সিলেট', labelEn: 'Dhaka ↔ Sylhet', oneWayBase: 3699, roundTripBase: 7200, active: true },
+                { id: 'DAC-SPD', from: 'DAC', to: 'SPD', labelBn: 'ঢাকা ↔ সৈয়দপুর', labelEn: 'Dhaka ↔ Saidpur', oneWayBase: 4099, roundTripBase: 7999, active: true },
+                { id: 'DAC-RJH', from: 'DAC', to: 'RJH', labelBn: 'ঢাকা ↔ রাজশাহী', labelEn: 'Dhaka ↔ Rajshahi', oneWayBase: 3699, roundTripBase: 7200, active: true },
+                { id: 'DAC-BZL', from: 'DAC', to: 'BZL', labelBn: 'ঢাকা ↔ বরিশাল', labelEn: 'Dhaka ↔ Barishal', oneWayBase: 3599, roundTripBase: 6999, active: true },
+                { id: 'DAC-JSR', from: 'DAC', to: 'JSR', labelBn: 'ঢাকা ↔ যশোর', labelEn: 'Dhaka ↔ Jashore', oneWayBase: 3650, roundTripBase: 7100, active: true }
+            ];
+
+            const DEFAULT_SCHEDULES = [
+                { id: 'sch-1', routeId: 'DAC-CXB', airline: 'US-Bangla Airlines', period: 'Morning', time: '08:15 AM - 09:20 AM', oneWayPrice: 4699, roundTripPrice: 9100, status: 'Active' },
+                { id: 'sch-2', routeId: 'DAC-CXB', airline: 'Air Astra', period: 'Afternoon', time: '01:30 PM - 02:35 PM', oneWayPrice: 4599, roundTripPrice: 8900, status: 'Active' },
+                { id: 'sch-3', routeId: 'DAC-CXB', airline: 'NOVOAIR', period: 'Evening', time: '06:45 PM - 07:50 PM', oneWayPrice: 4799, roundTripPrice: 9300, status: 'Active' },
+                { id: 'sch-4', routeId: 'DAC-CGP', airline: 'Biman Bangladesh Airlines', period: 'Morning', time: '07:45 AM - 08:40 AM', oneWayPrice: 3799, roundTripPrice: 7400, status: 'Active' },
+                { id: 'sch-5', routeId: 'DAC-CGP', airline: 'US-Bangla Airlines', period: 'Evening', time: '07:30 PM - 08:25 PM', oneWayPrice: 3899, roundTripPrice: 7600, status: 'Active' },
+                { id: 'sch-6', routeId: 'DAC-ZYL', airline: 'Air Astra', period: 'Morning', time: '09:00 AM - 09:50 AM', oneWayPrice: 3699, roundTripPrice: 7200, status: 'Active' },
+                { id: 'sch-7', routeId: 'DAC-ZYL', airline: 'NOVOAIR', period: 'Afternoon', time: '03:15 PM - 04:05 PM', oneWayPrice: 3750, roundTripPrice: 7300, status: 'Active' },
+                { id: 'sch-8', routeId: 'DAC-SPD', airline: 'US-Bangla Airlines', period: 'Morning', time: '08:40 AM - 09:40 AM', oneWayPrice: 4199, roundTripPrice: 8200, status: 'Active' },
+                { id: 'sch-9', routeId: 'DAC-SPD', airline: 'Air Astra', period: 'Evening', time: '05:50 PM - 06:50 PM', oneWayPrice: 4099, roundTripPrice: 7999, status: 'Active' },
+                { id: 'sch-10', routeId: 'DAC-RJH', airline: 'NOVOAIR', period: 'Afternoon', time: '02:10 PM - 03:00 PM', oneWayPrice: 3699, roundTripPrice: 7200, status: 'Active' },
+                { id: 'sch-11', routeId: 'DAC-BZL', airline: 'US-Bangla Airlines', period: 'Morning', time: '09:30 AM - 10:15 AM', oneWayPrice: 3599, roundTripPrice: 6999, status: 'Active' },
+                { id: 'sch-12', routeId: 'DAC-JSR', airline: 'Biman Bangladesh Airlines', period: 'Afternoon', time: '01:00 PM - 01:45 PM', oneWayPrice: 3650, roundTripPrice: 7100, status: 'Active' }
+            ];
+
+            const DEFAULT_STATE = {
+                logoDataUrl: '',
+                logoHeight: 48,
+                heroTitle: 'সহজ ও সাশ্রয়ী আকাশযাত্রা SHONARTORY (সোনার তরী)-এর সাথে',
+                heroSubtitle: 'ঢাকা থেকে কক্সবাজার, চট্টগ্রাম, সিলেট, সৈয়দপুর, রাজশাহী, বরিশাল ও যশোর রুটের সকল এয়ারলাইন্সের আপডাউন ও ওয়ান-ওয়ে টিকেট বুক করুন সরাসরি হোয়াটসঅ্যাপে।',
+                promoText: '🎉 ঢাকা ↔ কক্সবাজার ও সিলেট আপডাউন টিকেটে বিশেষ ডিসকাউন্ট চলছে! আজই হোয়াটসঅ্যাপে বুকিং দিন।',
+                promoVisible: true,
+                phonePrimary: '01963630584',
+                phoneSecondary: '01626794007',
+                email: 'robiulhasan211116@gmail.com',
+                facebookUrl: 'https://facebook.com',
+                address: 'ঢাকা, বাংলাদেশ (Dhaka, Bangladesh)',
+                routes: DEFAULT_ROUTES,
+                schedules: DEFAULT_SCHEDULES
+            };
+
+            function loadState() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (!saved) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+                    const parsed = JSON.parse(saved);
+                    return { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...parsed };
+                } catch (e) {
+                    console.error('Error loading storage:', e);
+                    return JSON.parse(JSON.stringify(DEFAULT_STATE));
+                }
+            }
+
+            let appState = loadState();
+            let activeTimeFilter = 'ALL';
+            let activeRouteFilter = 'ALL';
+
+            function normalizeBangladeshPhone(raw) {
+                const digits = String(raw || '').replace(/\D/g, '');
+                if (digits.startsWith('880')) {
+                    return { wa: digits, tel: '+' + digits, display: '+880' + digits.slice(3, 7) + '-' + digits.slice(7) };
+                }
+                if (digits.startsWith('01') && digits.length === 11) {
+                    return { wa: '88' + digits, tel: '+88' + digits, display: '+88' + digits.slice(0, 5) + '-' + digits.slice(5) };
+                }
+                return { wa: digits || '8801963630584', tel: raw || '+8801963630584', display: raw || '+8801963-630584' };
+            }
+
+            function showToast(message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                const bgClass = type === 'error' ? 'bg-rose-600 text-white' : 'bg-skydeep-950 text-white border border-amber-400/50';
+                const iconClass = type === 'error' ? 'fa-circle-exclamation text-rose-200' : 'fa-circle-check text-amber-400';
+                toast.className = `${bgClass} px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs sm:text-sm font-semibold pointer-events-auto transition-all duration-300`;
+                toast.innerHTML = `<i class="fa-solid ${iconClass} text-base"></i><span>${message}</span>`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-x-4');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3200);
+            }
+
+            function renderBrandLogos() {
+                const headerContainer = document.getElementById('header-brand-container');
+                const footerContainer = document.getElementById('footer-brand-container');
+                const h = Number(appState.logoHeight) || 48;
+
+                if (appState.logoDataUrl && appState.logoDataUrl.trim() !== '') {
+                    headerContainer.innerHTML = `
+                        <img src="${appState.logoDataUrl}" alt="SHONARTORY (সোনার তরী)" style="height: ${h}px;" class="w-auto max-w-[190px] sm:max-w-[230px] object-contain rounded-lg">
+                        <div class="hidden sm:block">
+                            <span class="font-en font-extrabold text-lg text-skydeep-950 block leading-none">SHONARTORY</span>
+                            <span class="text-xs text-slate-600 font-semibold">সোনার তরী এয়ার টিকেটিং</span>
+                        </div>
+                    `;
+                    footerContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${appState.logoDataUrl}" alt="SHONARTORY" style="height: ${Math.min(h, 56)}px;" class="w-auto max-w-[200px] object-contain bg-white/95 p-1.5 rounded-xl">
+                            <div>
+                                <h3 class="font-en font-extrabold text-xl text-white">SHONARTORY</h3>
+                                <p class="text-xs text-amber-400 font-semibold">সোনার তরী (Domestic Air Ticketing)</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    headerContainer.innerHTML = `
+                        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-skydeep-900 to-skydeep-700 flex items-center justify-center shadow-md border-2 border-amber-400/80 group-hover:scale-105 transition">
+                            <i class="fa-solid fa-paper-plane text-amber-400 text-xl sm:text-2xl -rotate-12"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-en font-extrabold text-lg sm:text-2xl tracking-tight text-skydeep-950">SHONARTORY</span>
+                                <span class="hidden sm:inline-block px-2 py-0.5 text-[11px] font-semibold bg-amber-100 text-amber-800 rounded-full border border-amber-300">সোনার তরী</span>
+                            </div>
+                            <p class="text-[11px] sm:text-xs text-slate-600 font-medium leading-tight">সোনার তরী এয়ার টিকেটিং এজেন্সি</p>
+                        </div>
+                    `;
+                    footerContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-skydeep-800 border border-amber-400/60 flex items-center justify-center">
+                                <i class="fa-solid fa-paper-plane text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-en font-extrabold text-xl text-white">SHONARTORY</h3>
+                                <p class="text-xs text-amber-400 font-semibold">সোনার তরী (Domestic Air Ticketing)</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            function renderHeroAndPromo() {
+                const titleEl = document.getElementById('hero-main-title');
+                const subEl = document.getElementById('hero-main-subtitle');
+                const promoBar = document.getElementById('promo-banner-bar');
+                const promoTextEl = document.getElementById('promo-banner-text');
+                const rawTitle = appState.heroTitle || DEFAULT_STATE.heroTitle;
+                titleEl.innerHTML = rawTitle.replace(/SHONARTORY \(সোনার তরী\)/g, '<span class="text-amber-400">SHONARTORY (সোনার তরী)</span>');
+                subEl.textContent = appState.heroSubtitle || DEFAULT_STATE.heroSubtitle;
+
+                if (appState.promoVisible && appState.promoText.trim() !== '') {
+                    promoBar.classList.remove('hidden');
+                    promoTextEl.textContent = appState.promoText;
+                } else {
+                    promoBar.classList.add('hidden');
+                }
+            }
+
+            function renderContactDetails() {
+                const p1 = normalizeBangladeshPhone(appState.phonePrimary);
+                const p2 = normalizeBangladeshPhone(appState.phoneSecondary);
+                const email = appState.email || 'robiulhasan211116@gmail.com';
+                const fb = appState.facebookUrl || 'https://facebook.com';
+                const addr = appState.address || 'ঢাকা, বাংলাদেশ (Dhaka, Bangladesh)';
+
+                document.getElementById('top-wa-primary').href = `https://wa.me/${p1.wa}`;
+                document.getElementById('top-wa-primary-text').textContent = p1.display;
+                document.getElementById('top-wa-secondary').href = `https://wa.me/${p2.wa}`;
+                document.getElementById('top-wa-secondary-text').textContent = p2.display;
+                document.getElementById('top-email-link').href = `mailto:${email}`;
+                document.getElementById('top-email-text').textContent = email;
+
+                document.getElementById('header-call-btn').href = `tel:${p1.tel}`;
+                document.getElementById('header-call-text').textContent = appState.phonePrimary;
+                document.getElementById('group-wa-btn').href = `https://wa.me/${p1.wa}?text=${encodeURIComponent('আসসালামু আলাইকুম SHONARTORY (সোনার তরী), আমি ১০+ যাত্রীর গ্রুপ বুকিং সম্পর্কে জানতে চাই।')}`;
+                document.getElementById('group-call-btn').href = `tel:${p2.tel}`;
+                document.getElementById('group-call-text').textContent = p2.display;
+
+                document.getElementById('form-wa-primary-label').textContent = p1.display;
+                document.getElementById('form-wa-secondary-label').textContent = p2.display;
+
+                document.getElementById('footer-phone1-text').textContent = p1.display;
+                document.getElementById('footer-phone1-call').href = `tel:${p1.tel}`;
+                document.getElementById('footer-phone1-wa').href = `https://wa.me/${p1.wa}`;
+                document.getElementById('footer-phone2-text').textContent = p2.display;
+                document.getElementById('footer-phone2-call').href = `tel:${p2.tel}`;
+                document.getElementById('footer-phone2-wa').href = `https://wa.me/${p2.wa}`;
+
+                document.getElementById('footer-email-link').href = `mailto:${email}`;
+                document.getElementById('footer-email-text').textContent = email;
+                document.getElementById('footer-fb-link').href = fb;
+                document.getElementById('footer-address-text').textContent = addr;
+
+                document.getElementById('floating-wa-btn').href = `https://wa.me/${p1.wa}?text=${encodeURIComponent('আসসালামু আলাইকুম SHONARTORY (সোনার তরী), আমি ডোমেস্টিক এয়ার টিকেট সম্পর্কে জানতে চাই।')}`;
+            }
+
+            const fromSelect = document.getElementById('from-airport');
+            const toSelect = document.getElementById('to-airport');
+            const depDateInput = document.getElementById('departure-date');
+            const retDateInput = document.getElementById('return-date');
+            const retDateWrapper = document.getElementById('ret-date-wrapper');
+            const depDateWrapper = document.getElementById('dep-date-wrapper');
+
+            function populateAirportSelects() {
+                const optionsHtml = AIRPORTS.map(ap => `<option value="${ap.code}">${ap.name}</option>`).join('');
+                fromSelect.innerHTML = optionsHtml;
+                toSelect.innerHTML = optionsHtml;
+                fromSelect.value = 'DAC';
+                toSelect.value = 'CXB';
+            }
+
+            function initDates() {
+                const today = new Date();
+                const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+                const returnDefault = new Date(today); returnDefault.setDate(returnDefault.getDate() + 4);
+                const formatDate = (d) => d.toISOString().split('T')[0];
+                depDateInput.min = formatDate(today);
+                depDateInput.value = formatDate(tomorrow);
+                retDateInput.min = formatDate(tomorrow);
+                retDateInput.value = formatDate(returnDefault);
+                depDateInput.addEventListener('change', () => {
+                    if (retDateInput.value < depDateInput.value) retDateInput.value = depDateInput.value;
+                    retDateInput.min = depDateInput.value;
+                });
+            }
+
+            function updateEstimatedFare() {
+                const fromCode = fromSelect.value;
+                const toCode = toSelect.value;
+                const tripType = document.querySelector('input[name="tripType"]:checked').value;
+                const adults = Number(document.getElementById('pax-adult').value) || 1;
+                const children = Number(document.getElementById('pax-child').value) || 0;
+                const infants = Number(document.getElementById('pax-infant').value) || 0;
+                const fromObj = AIRPORTS.find(a => a.code === fromCode) || AIRPORTS[0];
+                const toObj = AIRPORTS.find(a => a.code === toCode) || AIRPORTS[1];
+                const routeObj = appState.routes.find(r =>
+                    (r.from === fromCode && r.to === toCode) || (r.from === toCode && r.to === fromCode)
+                );
+                const baseFare = routeObj
+                    ? (tripType === 'round-trip' ? Number(routeObj.roundTripBase) : Number(routeObj.oneWayBase))
+                    : (tripType === 'round-trip' ? 8500 : 4400);
+                const totalEstimate = Math.round((adults * baseFare) + (children * baseFare * 0.75) + (infants * baseFare * 0.1));
+                const tripText = tripType === 'round-trip' ? 'আপডাউন (Round-Trip)' : 'ওয়ান-ওয়ে (One-Way)';
+                document.getElementById('estimated-fare-amount').textContent = `৳ ${totalEstimate.toLocaleString('en-US')}`;
+                document.getElementById('estimated-fare-breakdown').textContent = `${fromObj.cityBn} ↔ ${toObj.cityBn} • ${tripText} • যাত্রী: ${adults + children + infants} জন`;
+            }
+
+            [fromSelect, toSelect, document.getElementById('pax-adult'), document.getElementById('pax-child'), document.getElementById('pax-infant')].forEach(el => {
+                el.addEventListener('change', updateEstimatedFare);
+            });
+
+            document.querySelectorAll('input[name="tripType"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.value === 'round-trip') {
+                        retDateWrapper.classList.remove('hidden');
+                        depDateWrapper.classList.remove('md:col-span-5');
+                        depDateWrapper.classList.add('md:col-span-2');
+                    } else {
+                        retDateWrapper.classList.add('hidden');
+                        depDateWrapper.classList.remove('md:col-span-2');
+                        depDateWrapper.classList.add('md:col-span-5');
+                    }
+                    updateEstimatedFare();
+                });
+            });
+
+            document.getElementById('swap-route-btn').addEventListener('click', () => {
+                const temp = fromSelect.value;
+                fromSelect.value = toSelect.value;
+                toSelect.value = temp;
+                updateEstimatedFare();
+            });
+
+            document.getElementById('flight-booking-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fromCode = fromSelect.value;
+                const toCode = toSelect.value;
+                if (fromCode === toCode) {
+                    showToast('যাত্রা শুরু এবং গন্তব্য একই হতে পারবে না!', 'error');
+                    return;
+                }
+                const fromObj = AIRPORTS.find(a => a.code === fromCode);
+                const toObj = AIRPORTS.find(a => a.code === toCode);
+                const tripType = document.querySelector('input[name="tripType"]:checked').value;
+                const tripLabel = tripType === 'round-trip' ? 'আপডাউন (Round-Trip)' : 'ওয়ান-ওয়ে (One-Way)';
+                const depDate = depDateInput.value;
+                const retDate = retDateInput.value;
+                const airline = document.getElementById('airline-pref').value;
+                const adult = document.getElementById('pax-adult').value;
+                const child = document.getElementById('pax-child').value;
+                const infant = document.getElementById('pax-infant').value;
+                const paxName = document.getElementById('passenger-name').value.trim();
+                const paxPhone = document.getElementById('passenger-phone').value.trim();
+                const estFare = document.getElementById('estimated-fare-amount').textContent;
+                const selectedAgent = document.querySelector('input[name="waNumber"]:checked').value;
+                const agentPhoneRaw = selectedAgent === 'secondary' ? appState.phoneSecondary : appState.phonePrimary;
+                const waTarget = normalizeBangladeshPhone(agentPhoneRaw).wa;
+
+                let messageLines = [
+                    `✈️ *নতুন ফ্লাইট টিকেট বুকিং রিকোয়েস্ট - SHONARTORY (সোনার তরী)*`,
+                    `-----------------------------------`,
+                    `🔹 *যাত্রার ধরন:* ${tripLabel}`,
+                    `🛫 *রুট:* ${fromObj.name} ➔ ${toObj.name}`,
+                    `📅 *যাত্রার তারিখ:* ${depDate}`
+                ];
+                if (tripType === 'round-trip' && retDate) messageLines.push(`🔄 *ফেরার তারিখ:* ${retDate}`);
+                messageLines.push(
+                    `🏢 *এয়ারলাইন্স:* ${airline}`,
+                    `👥 *যাত্রী সংখ্যা:* Adult: ${adult}, Child: ${child}, Infant: ${infant}`,
+                    `💰 *আনুমানিক ভাড়া:* ${estFare}`,
+                    `-----------------------------------`,
+                    `👤 *যাত্রীর নাম:* ${paxName}`,
+                    `📞 *মোবাইল নম্বর:* ${paxPhone}`,
+                    `-----------------------------------`,
+                    `অনুগ্রহ করে এই ফ্লাইটের বর্তমান টিকেট প্রাইস ও সিট কনফার্ম করুন।`
+                );
+                const waUrl = `https://wa.me/${waTarget}?text=${encodeURIComponent(messageLines.join('\n'))}`;
+                showToast('হোয়াটসঅ্যাপে বুকিং তথ্য পাঠানো হচ্ছে...');
+                window.open(waUrl, '_blank', 'noopener,noreferrer');
+            });
+
+            function renderRoutesShowcase() {
+                const grid = document.getElementById('routes-showcase-grid');
+                const activeRoutes = appState.routes.filter(r => r.active);
+                grid.innerHTML = activeRoutes.map(r => `
+                    <div data-select-route="${r.id}" class="route-showcase-card bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 hover:border-skydeep-500 shadow-sm hover:shadow-md transition cursor-pointer group">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-en font-bold px-2.5 py-0.5 rounded-full bg-skydeep-50 text-skydeep-800 border border-skydeep-100">${r.from} ↔ ${r.to}</span>
+                            <i class="fa-solid fa-plane-departure text-amber-500 group-hover:translate-x-1 transition"></i>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-skydeep-950">${r.labelBn}</h3>
+                        <p class="text-xs font-en text-slate-500 mb-3">${r.labelEn}</p>
+                        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                            <div><span class="text-slate-500 block">ওয়ান-ওয়ে</span><span class="font-en font-extrabold text-sm text-skydeep-900">৳ ${Number(r.oneWayBase).toLocaleString('en-US')}</span></div>
+                            <div class="text-right"><span class="text-slate-500 block">আপডাউন</span><span class="font-en font-extrabold text-sm text-emerald-700">৳ ${Number(r.roundTripBase).toLocaleString('en-US')}</span></div>
+                        </div>
+                    </div>
+                `).join('');
+                grid.querySelectorAll('.route-showcase-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const rId = card.getAttribute('data-select-route');
+                        const routeObj = appState.routes.find(r => r.id === rId);
+                        if (!routeObj) return;
+                        fromSelect.value = routeObj.from;
+                        toSelect.value = routeObj.to;
+                        updateEstimatedFare();
+                        document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+                        showToast(`${routeObj.labelBn} রুট বুকিং ফর্মে সিলেক্ট করা হয়েছে!`);
+                    });
+                });
+            }
+
+            function renderRouteFilterPills() {
+                const container = document.getElementById('route-filter-pills');
+                const activeRoutes = appState.routes.filter(r => r.active);
+                let html = `
+                    <button type="button" data-route-filter="ALL" class="route-pill-btn shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition ${activeRouteFilter === 'ALL' ? 'bg-amber-400 text-slate-950 shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'}">
+                        সকল রুট (${activeRoutes.length})
+                    </button>
+                `;
+                activeRoutes.forEach(route => {
+                    const isActive = activeRouteFilter === route.id;
+                    html += `
+                        <button type="button" data-route-filter="${route.id}" class="route-pill-btn shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition ${isActive ? 'bg-amber-400 text-slate-950 font-bold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'}">
+                            ${route.labelBn}
+                        </button>
+                    `;
+                });
+                container.innerHTML = html;
+                container.querySelectorAll('.route-pill-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        activeRouteFilter = btn.getAttribute('data-route-filter');
+                        renderRouteFilterPills();
+                        renderScheduleCards();
+                    });
+                });
+            }
+
+            function getAirlineBadgeColor(airline) {
+                if (airline.includes('US-Bangla')) return 'bg-blue-50 text-blue-800 border-blue-200';
+                if (airline.includes('Air Astra')) return 'bg-amber-50 text-amber-800 border-amber-200';
+                if (airline.includes('Biman')) return 'bg-emerald-50 text-emerald-800 border-emerald-200';
+                if (airline.includes('NOVOAIR')) return 'bg-indigo-50 text-indigo-800 border-indigo-200';
+                return 'bg-slate-100 text-slate-800 border-slate-200';
+            }
+
+            function getPeriodLabelBn(period) {
+                if (period === 'Morning') return 'সকাল (Morning)';
+                if (period === 'Afternoon') return 'দুপুর (Afternoon)';
+                if (period === 'Evening') return 'সন্ধ্যা (Evening)';
+                return period;
+            }
+
+            function renderScheduleCards() {
+                const grid = document.getElementById('schedules-grid');
+                const activeRouteIds = new Set(appState.routes.filter(r => r.active).map(r => r.id));
+                const filtered = appState.schedules.filter(item => {
+                    if (!activeRouteIds.has(item.routeId)) return false;
+                    if (activeRouteFilter !== 'ALL' && item.routeId !== activeRouteFilter) return false;
+                    if (activeTimeFilter !== 'ALL' && item.period !== activeTimeFilter) return false;
+                    return true;
+                });
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `
+                        <div class="col-span-full bg-white rounded-3xl p-10 text-center border border-slate-200">
+                            <i class="fa-solid fa-plane-slash text-4xl text-slate-300 mb-3"></i>
+                            <h3 class="font-bold text-slate-800 text-lg">এই ফিল্টারে কোনো ফ্লাইট পাওয়া যায়নি</h3>
+                            <p class="text-sm text-slate-500 mt-1">অন্য রুট বা সময় নির্বাচন করুন অথবা সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন।</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map(sch => {
+                    const routeObj = appState.routes.find(r => r.id === sch.routeId) || { labelBn: sch.routeId, labelEn: sch.routeId, from: 'DAC', to: 'CXB' };
+                    const badgeClass = getAirlineBadgeColor(sch.airline);
+                    const isSoldOut = sch.status === 'Sold Out';
+                    return `
+                        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-skydeep-300 transition flex flex-col justify-between group ${isSoldOut ? 'opacity-75' : ''}">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-en font-bold border ${badgeClass}">
+                                        <i class="fa-solid fa-plane-up mr-1"></i>${sch.airline}
+                                    </span>
+                                    <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">${getPeriodLabelBn(sch.period)}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <h3 class="text-lg sm:text-xl font-bold text-skydeep-950 group-hover:text-skydeep-700 transition">${routeObj.labelBn}</h3>
+                                    <p class="text-xs font-en font-medium text-slate-500">${routeObj.labelEn}</p>
+                                </div>
+                                <div class="flex items-center justify-between text-xs sm:text-sm font-en font-semibold text-slate-700 bg-slate-50 px-3.5 py-2.5 rounded-2xl border border-slate-100 mb-4">
+                                    <span><i class="fa-regular fa-clock text-amber-600 mr-1.5"></i>${sch.time}</span>
+                                    ${isSoldOut ? '<span class="text-[11px] bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full font-bengali font-bold">সিট পূর্ণ</span>' : '<span class="text-[11px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bengali font-bold">সিট আছে</span>'}
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                                <div class="space-y-0.5">
+                                    <div class="text-xs text-slate-500">ওয়ান-ওয়ে: <strong class="font-en text-skydeep-950 text-sm">৳ ${Number(sch.oneWayPrice).toLocaleString('en-US')}</strong></div>
+                                    <div class="text-xs text-slate-500">আপডাউন: <strong class="font-en text-emerald-700 text-sm">৳ ${Number(sch.roundTripPrice).toLocaleString('en-US')}</strong></div>
+                                </div>
+                                <button type="button" data-book-sch="${sch.id}" ${isSoldOut ? 'disabled' : ''} class="quick-book-btn inline-flex items-center gap-2 ${isSoldOut ? 'bg-slate-300 text-slate-600 cursor-not-allowed' : 'bg-skydeep-900 hover:bg-amber-500 text-white hover:text-slate-950'} font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-sm transition">
+                                    <span>${isSoldOut ? 'Sold Out' : 'বুক করুন'}</span>
+                                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                grid.querySelectorAll('.quick-book-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const schId = btn.getAttribute('data-book-sch');
+                        const sch = appState.schedules.find(s => s.id === schId);
+                        if (!sch) return;
+                        const routeObj = appState.routes.find(r => r.id === sch.routeId);
+                        if (routeObj) { fromSelect.value = routeObj.from; toSelect.value = routeObj.to; }
+                        const airlineSelect = document.getElementById('airline-pref');
+                        const matchingOption = Array.from(airlineSelect.options).find(opt => opt.value.includes(sch.airline.split(' ')[0]));
+                        if (matchingOption) airlineSelect.value = matchingOption.value;
+                        updateEstimatedFare();
+                        document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+                        showToast(`${routeObj ? routeObj.labelBn : ''} (${sch.airline}) ফর্মে যুক্ত হয়েছে!`);
+                        setTimeout(() => document.getElementById('passenger-name').focus(), 600);
+                    });
+                });
+            }
+
+            document.querySelectorAll('.time-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.time-filter-btn').forEach(b => {
+                        b.classList.remove('bg-skydeep-900', 'text-white', 'font-bold');
+                        b.classList.add('text-slate-600', 'font-semibold');
+                    });
+                    btn.classList.add('bg-skydeep-900', 'text-white', 'font-bold');
+                    btn.classList.remove('text-slate-600', 'font-semibold');
+                    activeTimeFilter = btn.getAttribute('data-time-filter');
+                    renderScheduleCards();
+                });
+            });
+
+            // ---- INIT ----
+            populateAirportSelects();
+            initDates();
+            updateEstimatedFare();
+            renderBrandLogos();
+            renderHeroAndPromo();
+            renderContactDetails();
+            renderRoutesShowcase();
+            renderRouteFilterPills();
+            renderScheduleCards();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        })();
+    </script>
+</body>
+</html>

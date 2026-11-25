@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | SHONARTORY (সোনার তরী)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+                        bengali: ['Hind Siliguri', 'Noto Sans Bengali', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        skydeep: {50:'#f0f7ff',100:'#e0effe',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e',950:'#082f49'},
+                        goldaccent: {400:'#fbbf24',500:'#f59e0b',600:'#d97706'}
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Hind Siliguri', 'Noto Sans Bengali', 'Inter', sans-serif; background-color: #f8fafc; }
+        .font-en { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #0369a1; border-radius: 4px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <div id="toast-container" class="fixed top-5 right-5 z-[100] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ==================== LOGIN SCREEN ==================== -->
+    <div id="login-screen" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-skydeep-950 text-amber-400 flex items-center justify-center text-lg shadow">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">অ্যাডমিন প্যানেল লগইন</h3>
+                        <p class="text-xs text-slate-500">SHONARTORY (সোনার তরী) কন্ট্রোল সেন্টার</p>
+                    </div>
+                </div>
+                <a href="index.html" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition" title="হোম পেজে ফিরুন">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            </div>
+
+            <form id="admin-pin-form" class="space-y-4">
+                <div>
+                    <label for="admin-pin-input" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">
+                        অ্যাডমিন পাসওয়ার্ড দিন (Admin Password)
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="admin-pin-input" autocomplete="current-password" placeholder="পাসওয়ার্ড লিখুন..." required class="w-full font-en font-semibold text-base bg-slate-50 border border-slate-300 rounded-2xl pl-4 pr-12 py-3 text-slate-900 focus:ring-2 focus:ring-skydeep-700 focus:border-skydeep-700 outline-none">
+                        <button type="button" id="toggle-password-visibility" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg text-slate-500 hover:text-skydeep-800 hover:bg-slate-200/70 flex items-center justify-center transition" title="পাসওয়ার্ড দেখুন / লুকান">
+                            <i id="password-eye-icon" class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="login-error-box" class="hidden mt-2 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                        <span id="login-error-text">ভুল পাসওয়ার্ড! বড় হাতের ও ছোট হাতের অক্ষর (Case-sensitive) মিলিয়ে সঠিক পাসওয়ার্ড দিন।</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-skydeep-900 to-skydeep-800 hover:from-skydeep-950 hover:to-skydeep-900 text-white font-bold py-3.5 rounded-2xl transition shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket text-amber-400"></i>
+                    <span>অ্যাডমিন প্যানেলে প্রবেশ করুন</span>
+                </button>
+            </form>
+
+            <div class="mt-4 pt-4 border-t border-slate-100 text-center">
+                <a href="index.html" class="text-xs text-slate-500 hover:text-skydeep-700 font-semibold">
+                    <i class="fa-solid fa-arrow-left mr-1"></i>হোম পেজে ফিরে যান
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN ADMIN CONTENT ==================== -->
+    <div id="admin-main" class="hidden flex-1 flex flex-col">
+        <!-- Admin Header -->
+        <div class="bg-skydeep-950 text-white px-5 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3 border-b border-skydeep-800 sticky top-0 z-30">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-bold text-lg shadow">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-base sm:text-lg">SHONARTORY (সোনার তরী) - অ্যাডমিন কন্ট্রোল প্যানেল</h3>
+                    <p class="text-xs text-sky-200">লোগো, যোগাযোগের নম্বর, জিমেইল, ফ্লাইট সিডিউল এবং ভাড়া সরাসরি পরিবর্তন করুন</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="inline-flex items-center gap-1.5 bg-white/10 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition">
+                    <i class="fa-solid fa-house"></i>
+                    <span>হোম পেজ</span>
+                </a>
+                <button type="button" id="logout-btn" class="inline-flex items-center gap-1.5 bg-white/10 hover:bg-rose-600 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>লগআউট</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="bg-slate-100 px-4 sm:px-6 py-2.5 border-b border-slate-200 flex items-center gap-2 overflow-x-auto no-scrollbar sticky top-[76px] z-20">
+            <button type="button" data-admin-tab="branding" class="admin-tab-btn shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-skydeep-900 text-white shadow-sm transition">
+                <i class="fa-solid fa-image mr-1.5 text-amber-400"></i>১. ব্র্যান্ডিং ও লোগো
+            </button>
+            <button type="button" data-admin-tab="contact" class="admin-tab-btn shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-white transition">
+                <i class="fa-solid fa-address-book mr-1.5 text-emerald-600"></i>২. যোগাযোগ ও জিমেইল
+            </button>
+            <button type="button" data-admin-tab="schedules" class="admin-tab-btn shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-white transition">
+                <i class="fa-solid fa-plane-departure mr-1.5 text-skydeep-700"></i>৩. ফ্লাইট সিডিউল ও ভাড়া
+            </button>
+            <button type="button" data-admin-tab="routes" class="admin-tab-btn shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-white transition">
+                <i class="fa-solid fa-route mr-1.5 text-amber-600"></i>৪. রুট ও ভাড়া তালিকা
+            </button>
+        </div>
+
+        <!-- Tab Content Area -->
+        <div class="p-4 sm:p-6 flex-1 bg-slate-50/50">
+
+            <!-- ==================== TAB 1: BRANDING ==================== -->
+            <div id="admin-tab-branding" class="admin-tab-content space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-7 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <h4 class="font-bold text-slate-900 text-base flex items-center gap-2 border-b border-slate-100 pb-3">
+                            <i class="fa-solid fa-crown text-amber-500"></i>
+                            <span>ওয়েবসাইট লোগো পরিবর্তন (Website Logo Settings)</span>
+                        </h4>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">কম্পিউটার বা মোবাইল থেকে লোগো আপলোড করুন (PNG, JPG, SVG)</label>
+                            <input type="file" id="admin-logo-file" accept="image/*" class="w-full text-xs sm:text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-skydeep-900 file:text-white hover:file:bg-skydeep-800 bg-slate-50 border border-slate-300 rounded-xl cursor-pointer">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">অথবা লোগো ইমেজ লিংক (Logo Image URL) দিন</label>
+                            <input type="url" id="admin-logo-url" placeholder="https://example.com/logo.png" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-en focus:ring-2 focus:ring-skydeep-600 outline-none">
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between text-xs font-bold text-slate-700 mb-1">
+                                <span>লোগোর উচ্চতা / সাইজ (Logo Height)</span>
+                                <span id="logo-height-display" class="font-en text-skydeep-800 bg-skydeep-50 px-2 py-0.5 rounded">48px</span>
+                            </div>
+                            <input type="range" id="admin-logo-height" min="32" max="80" value="48" class="w-full accent-skydeep-800 cursor-pointer">
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-3 pt-2">
+                            <button type="button" id="save-branding-btn" class="bg-skydeep-900 hover:bg-skydeep-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow transition">
+                                <i class="fa-solid fa-check mr-1.5 text-amber-400"></i>লোগো ও ব্র্যান্ডিং সেভ করুন
+                            </button>
+                            <button type="button" id="reset-default-logo-btn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm border border-slate-300 transition">
+                                <i class="fa-solid fa-rotate-left mr-1"></i>ডিফল্ট লোগো ফিরিয়ে আনুন
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-sm mb-3">লাইভ লোগো প্রিভিউ (Live Preview)</h4>
+                            <div class="p-6 rounded-2xl bg-slate-100 border border-dashed border-slate-300 flex items-center justify-center min-h-[130px]" id="admin-logo-preview-box"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-3">
+                            <i class="fa-solid fa-circle-info text-skydeep-600 mr-1"></i>আপলোড করা লোগোটি হেডার এবং ফুটার উভয় জায়গায় স্বয়ংক্রিয়ভাবে আপডেট হবে।
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Hero Banner & Promo Bar Editor -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="font-bold text-slate-900 text-base border-b border-slate-100 pb-3">হিরো ব্যানার টেক্সট ও স্পেশাল অফার বার</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">হিরো প্রধান শিরোনাম (Hero Title)</label>
+                            <input type="text" id="admin-hero-title" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">হিরো সাব-টাইটেল (Hero Subtitle)</label>
+                            <input type="text" id="admin-hero-subtitle" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">প্রমোশনাল অফার ব্যানার লেখা (Announcement Bar)</label>
+                        <input type="text" id="admin-promo-input" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-medium">
+                    </div>
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <label class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700 cursor-pointer">
+                            <input type="checkbox" id="admin-promo-visible" class="w-4 h-4 accent-skydeep-800 rounded">
+                            <span>ওয়েবসাইটের উপরে অফার ব্যানারটি চালু রাখুন</span>
+                        </label>
+                        <button type="button" id="save-hero-promo-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-sm transition">
+                            ব্যানার ও টেক্সট সেভ করুন
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== TAB 2: CONTACT ==================== -->
+            <div id="admin-tab-contact" class="admin-tab-content hidden space-y-6">
+                <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h4 class="font-bold text-slate-900 text-base">মোবাইল নম্বর, হোয়াটসঅ্যাপ, জিমেইল ও অফিসের ঠিকানা</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">এখানে পরিবর্তন করলে পুরো ওয়েবসাইটের কল বাটন, হোয়াটসঅ্যাপ বুকিং লিংক এবং ফুটারের তথ্য সাথে সাথে আপডেট হবে।</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">প্রধান হোয়াটসঅ্যাপ ও কল নম্বর (Primary Phone)</label>
+                            <input type="text" id="admin-phone-primary" placeholder="01963630584" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-en font-bold">
+                            <span class="text-[11px] text-slate-500">যেমন: 01963630584 (স্বয়ংক্রিয়ভাবে +880 যুক্ত হবে)</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">দ্বিতীয় হোয়াটসঅ্যাপ ও কল নম্বর (Secondary Phone)</label>
+                            <input type="text" id="admin-phone-secondary" placeholder="01626794007" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-en font-bold">
+                            <span class="text-[11px] text-slate-500">যেমন: 01626794007</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">অফিসিয়াল জিমেইল (Business Gmail / Email)</label>
+                            <input type="email" id="admin-email" placeholder="robiulhasan211116@gmail.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-en font-semibold">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">ফেসবুক পেজ লিংক (Facebook Page URL)</label>
+                            <input type="url" id="admin-facebook" placeholder="https://facebook.com/..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-en">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">অফিসের ঠিকানা (Office Address)</label>
+                            <input type="text" id="admin-address" placeholder="ঢাকা, বাংলাদেশ (Dhaka, Bangladesh)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="button" id="save-contact-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl text-xs sm:text-sm shadow transition">
+                            <i class="fa-solid fa-floppy-disk mr-1.5"></i>যোগাযোগের সকল তথ্য সেভ করুন
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Backup, Restore & Reset -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">ডেটা ব্যাকআপ ও রিসেট (Backup & Reset)</h4>
+                        <p class="text-xs text-slate-500">আপনার সকল সেটিংস ফাইল আকারে ব্যাকআপ রাখতে বা ডিফল্ট অবস্থায় ফিরিয়ে নিতে পারেন।</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="button" id="export-backup-btn" class="px-3.5 py-2 bg-skydeep-50 hover:bg-skydeep-100 text-skydeep-900 border border-skydeep-200 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-download mr-1"></i>Export Backup
+                        </button>
+                        <label class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-xl text-xs font-bold transition cursor-pointer">
+                            <i class="fa-solid fa-upload mr-1"></i>Import Backup
+                            <input type="file" id="import-backup-input" accept=".json" class="hidden">
+                        </label>
+                        <button type="button" id="reset-defaults-btn" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-rotate-left mr-1"></i>Reset Default
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== TAB 3: SCHEDULES ==================== -->
+            <div id="admin-tab-schedules" class="admin-tab-content hidden space-y-6">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <h4 id="schedule-form-title" class="font-bold text-slate-900 text-sm sm:text-base mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-skydeep-700"></i>
+                        <span>নতুন ফ্লাইট সিডিউল ও ভাড়া যোগ করুন</span>
+                    </h4>
+                    <form id="admin-schedule-form" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                        <input type="hidden" id="edit-schedule-id">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">রুট নির্বাচন করুন (Route)</label>
+                            <select id="admin-sched-route" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold"></select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">এয়ারলাইন্স (Airline)</label>
+                            <select id="admin-sched-airline" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold">
+                                <option value="US-Bangla Airlines">US-Bangla Airlines</option>
+                                <option value="Air Astra">Air Astra</option>
+                                <option value="Biman Bangladesh Airlines">Biman Bangladesh Airlines</option>
+                                <option value="NOVOAIR">NOVOAIR</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">সময়কাল (Time Slot)</label>
+                            <select id="admin-sched-period" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold">
+                                <option value="Morning">সকাল (Morning)</option>
+                                <option value="Afternoon">দুপুর (Afternoon)</option>
+                                <option value="Evening">সন্ধ্যা (Evening)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">ছাড়ার ও পৌঁছানোর সময় (Time)</label>
+                            <input type="text" id="admin-sched-time" placeholder="08:30 AM - 09:35 AM" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-en">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">ওয়ান-ওয়ে ভাড়া (One-Way ৳)</label>
+                            <input type="number" id="admin-sched-oneway" placeholder="4500" min="500" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-en font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">আপডাউন ভাড়া (Round-Trip ৳)</label>
+                            <input type="number" id="admin-sched-roundtrip" placeholder="8800" min="1000" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-en font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">স্ট্যাটাস (Status)</label>
+                            <select id="admin-sched-status" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold">
+                                <option value="Active">সক্রিয় (Active)</option>
+                                <option value="Sold Out">সিট পূর্ণ (Sold Out)</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end gap-2">
+                            <button type="submit" class="w-full bg-skydeep-900 hover:bg-skydeep-800 text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm transition shadow-sm">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i>সেভ করুন
+                            </button>
+                            <button type="button" id="cancel-edit-sched" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 px-3 rounded-xl text-xs transition" title="বাতিল">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white overflow-x-auto border border-slate-200 rounded-2xl shadow-sm">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                        <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="py-3 px-4">রুট (Route)</th>
+                                <th class="py-3 px-4">এয়ারলাইন্স</th>
+                                <th class="py-3 px-4">সময় (Period & Time)</th>
+                                <th class="py-3 px-4">ওয়ান-ওয়ে (৳)</th>
+                                <th class="py-3 px-4">আপডাউন (৳)</th>
+                                <th class="py-3 px-4">স্ট্যাটাস</th>
+                                <th class="py-3 px-4 text-right">অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-schedules-tbody" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ==================== TAB 4: ROUTES ==================== -->
+            <div id="admin-tab-routes" class="admin-tab-content hidden space-y-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 mb-4">
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-base">৭টি অভ্যন্তরীণ রুটের বেস ভাড়া ও সক্রিয়তা</h4>
+                            <p class="text-xs text-slate-500">এখানে নির্ধারিত ভাড়া বুকিং ক্যালকুলেটর এবং রুট কার্ডে দেখাবে।</p>
+                        </div>
+                        <button type="button" id="save-all-routes-btn" class="bg-skydeep-900 hover:bg-skydeep-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow transition">
+                            <i class="fa-solid fa-check mr-1.5 text-amber-400"></i>সকল রুটের ভাড়া সেভ করুন
+                        </button>
+                    </div>
+                    <div id="admin-routes-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== CONSTANTS ====================
+            const ADMIN_PASSWORD = 'Robiul1971$';
+            const STORAGE_KEY = 'shonartory_store_v2';
+            const SESSION_KEY = 'shonartory_admin_loggedin';
+
+            const DEFAULT_ROUTES = [
+                { id: 'DAC-CXB', from: 'DAC', to: 'CXB', labelBn: 'ঢাকা ↔ কক্সবাজার', labelEn: "Dhaka ↔ Cox's Bazar", oneWayBase: 4599, roundTripBase: 8900, active: true },
+                { id: 'DAC-CGP', from: 'DAC', to: 'CGP', labelBn: 'ঢাকা ↔ চট্টগ্রাম', labelEn: 'Dhaka ↔ Chattogram', oneWayBase: 3799, roundTripBase: 7400, active: true },
+                { id: 'DAC-ZYL', from: 'DAC', to: 'ZYL', labelBn: 'ঢাকা ↔ সিলেট', labelEn: 'Dhaka ↔ Sylhet', oneWayBase: 3699, roundTripBase: 7200, active: true },
+                { id: 'DAC-SPD', from: 'DAC', to: 'SPD', labelBn: 'ঢাকা ↔ সৈয়দপুর', labelEn: 'Dhaka ↔ Saidpur', oneWayBase: 4099, roundTripBase: 7999, active: true },
+                { id: 'DAC-RJH', from: 'DAC', to: 'RJH', labelBn: 'ঢাকা ↔ রাজশাহী', labelEn: 'Dhaka ↔ Rajshahi', oneWayBase: 3699, roundTripBase: 7200, active: true },
+                { id: 'DAC-BZL', from: 'DAC', to: 'BZL', labelBn: 'ঢাকা ↔ বরিশাল', labelEn: 'Dhaka ↔ Barishal', oneWayBase: 3599, roundTripBase: 6999, active: true },
+                { id: 'DAC-JSR', from: 'DAC', to: 'JSR', labelBn: 'ঢাকা ↔ যশোর', labelEn: 'Dhaka ↔ Jashore', oneWayBase: 3650, roundTripBase: 7100, active: true }
+            ];
+
+            const DEFAULT_SCHEDULES = [
+                { id: 'sch-1', routeId: 'DAC-CXB', airline: 'US-Bangla Airlines', period: 'Morning', time: '08:15 AM - 09:20 AM', oneWayPrice: 4699, roundTripPrice: 9100, status: 'Active' },
+                { id: 'sch-2', routeId: 'DAC-CXB', airline: 'Air Astra', period: 'Afternoon', time: '01:30 PM - 02:35 PM', oneWayPrice: 4599, roundTripPrice: 8900, status: 'Active' },
+                { id: 'sch-3', routeId: 'DAC-CXB', airline: 'NOVOAIR', period: 'Evening', time: '06:45 PM - 07:50 PM', oneWayPrice: 4799, roundTripPrice: 9300, status: 'Active' },
+                { id: 'sch-4', routeId: 'DAC-CGP', airline: 'Biman Bangladesh Airlines', period: 'Morning', time: '07:45 AM - 08:40 AM', oneWayPrice: 3799, roundTripPrice: 7400, status: 'Active' },
+                { id: 'sch-5', routeId: 'DAC-CGP', airline: 'US-Bangla Airlines', period: 'Evening', time: '07:30 PM - 08:25 PM', oneWayPrice: 3899, roundTripPrice: 7600, status: 'Active' },
+                { id: 'sch-6', routeId: 'DAC-ZYL', airline: 'Air Astra', period: 'Morning', time: '09:00 AM - 09:50 AM', oneWayPrice: 3699, roundTripPrice: 7200, status: 'Active' },
+                { id: 'sch-7', routeId: 'DAC-ZYL', airline: 'NOVOAIR', period: 'Afternoon', time: '03:15 PM - 04:05 PM', oneWayPrice: 3750, roundTripPrice: 7300, status: 'Active' },
+                { id: 'sch-8', routeId: 'DAC-SPD', airline: 'US-Bangla Airlines', period: 'Morning', time: '08:40 AM - 09:40 AM', oneWayPrice: 4199, roundTripPrice: 8200, status: 'Active' },
+                { id: 'sch-9', routeId: 'DAC-SPD', airline: 'Air Astra', period: 'Evening', time: '05:50 PM - 06:50 PM', oneWayPrice: 4099, roundTripPrice: 7999, status: 'Active' },
+                { id: 'sch-10', routeId: 'DAC-RJH', airline: 'NOVOAIR', period: 'Afternoon', time: '02:10 PM - 03:00 PM', oneWayPrice: 3699, roundTripPrice: 7200, status: 'Active' },
+                { id: 'sch-11', routeId: 'DAC-BZL', airline: 'US-Bangla Airlines', period: 'Morning', time: '09:30 AM - 10:15 AM', oneWayPrice: 3599, roundTripPrice: 6999, status: 'Active' },
+                { id: 'sch-12', routeId: 'DAC-JSR', airline: 'Biman Bangladesh Airlines', period: 'Afternoon', time: '01:00 PM - 01:45 PM', oneWayPrice: 3650, roundTripPrice: 7100, status: 'Active' }
+            ];
+
+            const DEFAULT_STATE = {
+                logoDataUrl: '',
+                logoHeight: 48,
+                heroTitle: 'সহজ ও সাশ্রয়ী আকাশযাত্রা SHONARTORY (সোনার তরী)-এর সাথে',
+                heroSubtitle: 'ঢাকা থেকে কক্সবাজার, চট্টগ্রাম, সিলেট, সৈয়দপুর, রাজশাহী, বরিশাল ও যশোর রুটের সকল এয়ারলাইন্সের আপডাউন ও ওয়ান-ওয়ে টিকেট বুক করুন সরাসরি হোয়াটসঅ্যাপে।',
+                promoText: '🎉 ঢাকা ↔ কক্সবাজার ও সিলেট আপডাউন টিকেটে বিশেষ ডিসকাউন্ট চলছে! আজই হোয়াটসঅ্যাপে বুকিং দিন।',
+                promoVisible: true,
+                phonePrimary: '01963630584',
+                phoneSecondary: '01626794007',
+                email: 'robiulhasan211116@gmail.com',
+                facebookUrl: 'https://facebook.com',
+                address: 'ঢাকা, বাংলাদেশ (Dhaka, Bangladesh)',
+                routes: DEFAULT_ROUTES,
+                schedules: DEFAULT_SCHEDULES
+            };
+
+            // ==================== STATE ====================
+            function loadState() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (!saved) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+                    const parsed = JSON.parse(saved);
+                    return { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...parsed };
+                } catch (e) {
+                    return JSON.parse(JSON.stringify(DEFAULT_STATE));
+                }
+            }
+            function saveState() {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                } catch (e) {
+                    showToast('ডেটা সংরক্ষণে সমস্যা হয়েছে (ছবির সাইজ বেশি হতে পারে)!', 'error');
+                }
+            }
+
+            let appState = loadState();
+            let tempLogoDataUrl = appState.logoDataUrl || '';
+
+            // ==================== HELPERS ====================
+            function showToast(message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                const bgClass = type === 'error' ? 'bg-rose-600 text-white' : 'bg-skydeep-950 text-white border border-amber-400/50';
+                const iconClass = type === 'error' ? 'fa-circle-exclamation text-rose-200' : 'fa-circle-check text-amber-400';
+                toast.className = `${bgClass} px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs sm:text-sm font-semibold pointer-events-auto transition-all duration-300`;
+                toast.innerHTML = `<i class="fa-solid ${iconClass} text-base"></i><span>${message}</span>`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-x-4');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3200);
+            }
+
+            // ==================== AUTH ====================
+            const loginScreen = document.getElementById('login-screen');
+            const adminMain = document.getElementById('admin-main');
+            const pinInput = document.getElementById('admin-pin-input');
+            const loginErrorBox = document.getElementById('login-error-box');
+            const eyeIcon = document.getElementById('password-eye-icon');
+
+            function showAdminPanel() {
+                loginScreen.classList.add('hidden');
+                adminMain.classList.remove('hidden');
+                populateAdminFields();
+            }
+
+            // Auto-login if session exists
+            if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+                showAdminPanel();
+            }
+
+            document.getElementById('toggle-password-visibility').addEventListener('click', () => {
+                if (pinInput.type === 'password') {
+                    pinInput.type = 'text';
+                    eyeIcon.className = 'fa-regular fa-eye-slash';
+                } else {
+                    pinInput.type = 'password';
+                    eyeIcon.className = 'fa-regular fa-eye';
+                }
+                pinInput.focus();
+            });
+
+            document.getElementById('admin-pin-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const entered = pinInput.value;
+                if (entered === ADMIN_PASSWORD) {
+                    loginErrorBox.classList.add('hidden');
+                    sessionStorage.setItem(SESSION_KEY, 'true');
+                    showAdminPanel();
+                    showToast('স্বাগতম! অ্যাডমিন প্যানেল সফলভাবে আনলক হয়েছে।');
+                } else {
+                    loginErrorBox.classList.remove('hidden');
+                    pinInput.select();
+                }
+            });
+
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                sessionStorage.removeItem(SESSION_KEY);
+                location.reload();
+            });
+
+            // ==================== TAB NAVIGATION ====================
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.admin-tab-btn').forEach(b => {
+                        b.classList.remove('bg-skydeep-900', 'text-white', 'font-bold', 'shadow-sm');
+                        b.classList.add('text-slate-700', 'font-semibold');
+                    });
+                    btn.classList.add('bg-skydeep-900', 'text-white', 'font-bold', 'shadow-sm');
+                    btn.classList.remove('text-slate-700', 'font-semibold');
+                    const target = btn.getAttribute('data-admin-tab');
+                    document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+                    document.getElementById(`admin-tab-${target}`).classList.remove('hidden');
+                });
+            });
+
+            // ==================== TAB 1: BRANDING ====================
+            function updateAdminLogoPreview() {
+                const box = document.getElementById('admin-logo-preview-box');
+                const h = Number(document.getElementById('admin-logo-height').value) || 48;
+                document.getElementById('logo-height-display').textContent = `${h}px`;
+
+                if (tempLogoDataUrl && tempLogoDataUrl.trim() !== '') {
+                    box.innerHTML = `<img src="${tempLogoDataUrl}" alt="Logo Preview" style="height: ${h}px;" class="w-auto max-w-full object-contain rounded-lg shadow-sm">`;
+                } else {
+                    box.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-skydeep-900 flex items-center justify-center border-2 border-amber-400">
+                                <i class="fa-solid fa-paper-plane text-amber-400 text-xl -rotate-12"></i>
+                            </div>
+                            <div>
+                                <span class="font-en font-extrabold text-xl text-skydeep-950 block">SHONARTORY</span>
+                                <span class="text-xs text-slate-600 font-semibold">ডিফল্ট লোগো (Default)</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            document.getElementById('admin-logo-file').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    tempLogoDataUrl = ev.target.result;
+                    document.getElementById('admin-logo-url').value = '';
+                    updateAdminLogoPreview();
+                    showToast('লোগো প্রিভিউ লোড হয়েছে! সেভ বাটনে ক্লিক করুন।');
+                };
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('admin-logo-url').addEventListener('input', (e) => {
+                const url = e.target.value.trim();
+                if (url) {
+                    tempLogoDataUrl = url;
+                    updateAdminLogoPreview();
+                }
+            });
+
+            document.getElementById('admin-logo-height').addEventListener('input', updateAdminLogoPreview);
+
+            document.getElementById('save-branding-btn').addEventListener('click', () => {
+                appState.logoDataUrl = tempLogoDataUrl;
+                appState.logoHeight = Number(document.getElementById('admin-logo-height').value) || 48;
+                saveState();
+                showToast('নতুন লোগো ও সাইজ সফলভাবে সেভ হয়েছে!');
+            });
+
+            document.getElementById('reset-default-logo-btn').addEventListener('click', () => {
+                tempLogoDataUrl = '';
+                appState.logoDataUrl = '';
+                appState.logoHeight = 48;
+                document.getElementById('admin-logo-file').value = '';
+                document.getElementById('admin-logo-url').value = '';
+                document.getElementById('admin-logo-height').value = 48;
+                saveState();
+                updateAdminLogoPreview();
+                showToast('ডিফল্ট লোগো ফিরিয়ে আনা হয়েছে।');
+            });
+
+            document.getElementById('save-hero-promo-btn').addEventListener('click', () => {
+                appState.heroTitle = document.getElementById('admin-hero-title').value.trim() || DEFAULT_STATE.heroTitle;
+                appState.heroSubtitle = document.getElementById('admin-hero-subtitle').value.trim() || DEFAULT_STATE.heroSubtitle;
+                appState.promoText = document.getElementById('admin-promo-input').value.trim();
+                appState.promoVisible = document.getElementById('admin-promo-visible').checked;
+                saveState();
+                showToast('হিরো ব্যানার ও অফার বার আপডেট হয়েছে!');
+            });
+
+            // ==================== TAB 2: CONTACT ====================
+            document.getElementById('save-contact-btn').addEventListener('click', () => {
+                appState.phonePrimary = document.getElementById('admin-phone-primary').value.trim() || DEFAULT_STATE.phonePrimary;
+                appState.phoneSecondary = document.getElementById('admin-phone-secondary').value.trim() || DEFAULT_STATE.phoneSecondary;
+                appState.email = document.getElementById('admin-email').value.trim() || DEFAULT_STATE.email;
+                appState.facebookUrl = document.getElementById('admin-facebook').value.trim() || DEFAULT_STATE.facebookUrl;
+                appState.address = document.getElementById('admin-address').value.trim() || DEFAULT_STATE.address;
+                saveState();
+                showToast('মোবাইল নম্বর, জিমেইল ও ঠিকানা সফলভাবে আপডেট হয়েছে!');
+            });
+
+            // Export
+            document.getElementById('export-backup-btn').addEventListener('click', () => {
+                const dataStr = JSON.stringify(appState, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `shonartory-backup-${new Date().toISOString().slice(0,10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast('ব্যাকআপ ফাইল ডাউনলোড হয়েছে!');
+            });
+
+            // Import
+            document.getElementById('import-backup-input').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const parsed = JSON.parse(ev.target.result);
+                        appState = { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...parsed };
+                        saveState();
+                        populateAdminFields();
+                        showToast('ব্যাকআপ সফলভাবে রিস্টোর হয়েছে!');
+                    } catch (err) {
+                        showToast('ভুল ব্যাকআপ ফাইল! আবার চেষ্টা করুন।', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            });
+
+            // Reset defaults
+            document.getElementById('reset-defaults-btn').addEventListener('click', () => {
+                if (!confirm('সকল সেটিংস ডিফল্টে ফিরিয়ে আনতে চান? এই কাজটি ফিরিয়ে আনা যাবে না।')) return;
+                appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+                saveState();
+                populateAdminFields();
+                showToast('সকল সেটিংস ডিফল্টে রিসেট হয়েছে।');
+            });
+
+            // ==================== TAB 3: SCHEDULES ====================
+            document.getElementById('admin-schedule-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const editId = document.getElementById('edit-schedule-id').value;
+                const routeId = document.getElementById('admin-sched-route').value;
+                const airline = document.getElementById('admin-sched-airline').value;
+                const period = document.getElementById('admin-sched-period').value;
+                const time = document.getElementById('admin-sched-time').value.trim();
+                const oneWayPrice = Number(document.getElementById('admin-sched-oneway').value);
+                const roundTripPrice = Number(document.getElementById('admin-sched-roundtrip').value);
+                const status = document.getElementById('admin-sched-status').value;
+
+                if (editId) {
+                    const idx = appState.schedules.findIndex(s => s.id === editId);
+                    if (idx > -1) {
+                        appState.schedules[idx] = { id: editId, routeId, airline, period, time, oneWayPrice, roundTripPrice, status };
+                    }
+                    showToast('ফ্লাইট সিডিউল আপডেট হয়েছে!');
+                } else {
+                    const newId = 'sch-' + Date.now();
+                    appState.schedules.push({ id: newId, routeId, airline, period, time, oneWayPrice, roundTripPrice, status });
+                    showToast('নতুন ফ্লাইট সিডিউল যোগ হয়েছে!');
+                }
+                saveState();
+                document.getElementById('admin-schedule-form').reset();
+                document.getElementById('edit-schedule-id').value = '';
+                document.getElementById('schedule-form-title').innerHTML = `<i class="fa-solid fa-plus-circle text-skydeep-700"></i><span>নতুন ফ্লাইট সিডিউল ও ভাড়া যোগ করুন</span>`;
+                document.getElementById('cancel-edit-sched').classList.add('hidden');
+                populateAdminFields();
+            });
+
+            document.getElementById('cancel-edit-sched').addEventListener('click', () => {
+                document.getElementById('admin-schedule-form').reset();
+                document.getElementById('edit-schedule-id').value = '';
+                document.getElementById('schedule-form-title').innerHTML = `<i class="fa-solid fa-plus-circle text-skydeep-700"></i><span>নতুন ফ্লাইট সিডিউল ও ভাড়া যোগ করুন</span>`;
+                document.getElementById('cancel-edit-sched').classList.add('hidden');
+            });
+
+            // ==================== TAB 4: ROUTES ====================
+            document.getElementById('save-all-routes-btn').addEventListener('click', () => {
+                document.querySelectorAll('[data-route-editor]').forEach(editor => {
+                    const id = editor.getAttribute('data-route-editor');
+                    const route = appState.routes.find(r => r.id === id);
+                    if (!route) return;
+                    route.oneWayBase = Number(editor.querySelector('.route-oneway-inp').value) || route.oneWayBase;
+                    route.roundTripBase = Number(editor.querySelector('.route-roundtrip-inp').value) || route.roundTripBase;
+                    route.active = editor.querySelector('.route-active-chk').checked;
+                });
+                saveState();
+                populateAdminFields();
+                showToast('সকল রুটের ভাড়া ও স্ট্যাটাস সেভ হয়েছে!');
+            });
+
+            // ==================== POPULATE ====================
+            function populateAdminFields() {
+                // Branding
+                tempLogoDataUrl = appState.logoDataUrl || '';
+                document.getElementById('admin-logo-height').value = appState.logoHeight || 48;
+                document.getElementById('admin-logo-url').value = (tempLogoDataUrl && !tempLogoDataUrl.startsWith('data:')) ? tempLogoDataUrl : '';
+                updateAdminLogoPreview();
+                document.getElementById('admin-hero-title').value = appState.heroTitle;
+                document.getElementById('admin-hero-subtitle').value = appState.heroSubtitle;
+                document.getElementById('admin-promo-input').value = appState.promoText;
+                document.getElementById('admin-promo-visible').checked = appState.promoVisible;
+
+                // Contact
+                document.getElementById('admin-phone-primary').value = appState.phonePrimary;
+                document.getElementById('admin-phone-secondary').value = appState.phoneSecondary;
+                document.getElementById('admin-email').value = appState.email;
+                document.getElementById('admin-facebook').value = appState.facebookUrl;
+                document.getElementById('admin-address').value = appState.address;
+
+                // Schedules
+                const routeSelect = document.getElementById('admin-sched-route');
+                routeSelect.innerHTML = appState.routes.map(r => `<option value="${r.id}">${r.labelBn} (${r.id})</option>`).join('');
+
+                const tbody = document.getElementById('admin-schedules-tbody');
+                tbody.innerHTML = appState.schedules.map(sch => {
+                    const routeObj = appState.routes.find(r => r.id === sch.routeId);
+                    const isSoldOut = sch.status === 'Sold Out';
+                    return `
+                        <tr class="hover:bg-slate-50">
+                            <td class="py-3 px-4 font-bold text-slate-900">${routeObj ? routeObj.labelBn : sch.routeId}</td>
+                            <td class="py-3 px-4 font-en font-semibold text-slate-700">${sch.airline}</td>
+                            <td class="py-3 px-4">
+                                <span class="text-xs font-bold text-skydeep-800 block">${sch.period}</span>
+                                <span class="text-xs font-en text-slate-500">${sch.time}</span>
+                            </td>
+                            <td class="py-3 px-4 font-en font-bold text-skydeep-900">৳ ${Number(sch.oneWayPrice).toLocaleString('en-US')}</td>
+                            <td class="py-3 px-4 font-en font-bold text-emerald-700">৳ ${Number(sch.roundTripPrice).toLocaleString('en-US')}</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${isSoldOut ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">${sch.status || 'Active'}</span>
+                            </td>
+                            <td class="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
+                                <button type="button" data-edit-sch="${sch.id}" class="px-2.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-bold transition" title="Edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button type="button" data-del-sch="${sch.id}" class="px-2.5 py-1.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded-lg text-xs font-bold transition" title="Delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                tbody.querySelectorAll('[data-edit-sch]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = btn.getAttribute('data-edit-sch');
+                        const sch = appState.schedules.find(s => s.id === id);
+                        if (!sch) return;
+                        document.getElementById('edit-schedule-id').value = sch.id;
+                        document.getElementById('admin-sched-route').value = sch.routeId;
+                        document.getElementById('admin-sched-airline').value = sch.airline;
+                        document.getElementById('admin-sched-period').value = sch.period;
+                        document.getElementById('admin-sched-time').value = sch.time;
+                        document.getElementById('admin-sched-oneway').value = sch.oneWayPrice;
+                        document.getElementById('admin-sched-roundtrip').value = sch.roundTripPrice;
+                        document.getElementById('admin-sched-status').value = sch.status || 'Active';
+                        document.getElementById('schedule-form-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-600"></i><span>ফ্লাইট সিডিউল ও ভাড়া এডিট করুন</span>`;
+                        document.getElementById('cancel-edit-sched').classList.remove('hidden');
+                        document.getElementById('admin-schedule-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    });
+                });
+
+                tbody.querySelectorAll('[data-del-sch]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = btn.getAttribute('data-del-sch');
+                        if (!confirm('এই ফ্লাইট সিডিউলটি মুছে ফেলতে চান?')) return;
+                        appState.schedules = appState.schedules.filter(s => s.id !== id);
+                        saveState();
+                        populateAdminFields();
+                        showToast('ফ্লাইট সিডিউল মুছে ফেলা হয়েছে।');
+                    });
+                });
+
+                // Routes editor
+                const routesList = document.getElementById('admin-routes-list');
+                routesList.innerHTML = appState.routes.map(r => `
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3" data-route-editor="${r.id}">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-bold text-slate-900 text-sm">${r.labelBn}</p>
+                                <p class="text-xs font-en text-slate-500">${r.labelEn}</p>
+                            </div>
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="route-active-chk w-4 h-4 accent-emerald-600 rounded" ${r.active ? 'checked' : ''}>
+                                <span class="text-xs font-bold ${r.active ? 'text-emerald-700' : 'text-rose-600'}">${r.active ? 'চালু (Active)' : 'বন্ধ (Hidden)'}</span>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">ওয়ান-ওয়ে বেস ভাড়া (৳)</label>
+                                <input type="number" class="route-oneway-inp w-full bg-white border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs sm:text-sm font-en font-bold" value="${r.oneWayBase}">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">আপডাউন বেস ভাড়া (৳)</label>
+                                <input type="number" class="route-roundtrip-inp w-full bg-white border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs sm:text-sm font-en font-bold" value="${r.roundTripBase}">
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+        })();
+    </script>
+</body>
+</html>
